@@ -1,0 +1,15 @@
+@import '../../../assets/scss/variables';
+
+.logs-container{
+    min-height: calc(100vh - 132px);
+    background-color: $light;
+
+    & .logs-empty{
+        min-height: calc(100vh - 192px);
+        // height: 100%;
+    }
+
+    & .img-empty{
+        max-width: 200px;
+    }
+}

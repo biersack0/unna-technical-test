@@ -1,0 +1,128 @@
+<div class="home-container">
+	<div class="container">
+		<div class="row d-flex justify-content-center">
+			<div class="col-12">
+				<h4 class="my-3 text-center">{{ isUpdateUser ? 'Editar' : 'Crear' }} usuario</h4>
+			</div>
+			<div class="col-md-8 col-lg-6 col-xl-4">
+				<form [formGroup]="userForm" (ngSubmit)="createUser()">
+					<div class="row g-2">
+						<div class="col-12">
+							<label class="form-label" for="fullname">Nombre</label>
+							<app-control-message [control]="userForm.get('fullname')!">
+								<input type="text" class="form-control form-control-sm" autocomplete="off" id="fullname" formControlName="fullname" />
+							</app-control-message>
+						</div>
+						<div class="col-12">
+							<label class="form-label" for="email">Correo electrónico</label>
+							<app-control-message [control]="userForm.get('email')!">
+								<input type="text" class="form-control form-control-sm" id="email" formControlName="email" />
+							</app-control-message>
+						</div>
+						<div class="col-5">
+							<label class="form-label" for="email">Tipo de documento</label>
+							<select class="form-select form-select-sm" formControlName="documentType">
+								<option disabled>Seleccione</option>
+								<option value="dni">DNI</option>
+								<option value="ce">C.E</option>
+							</select>
+						</div>
+						<div class="col-7">
+							<label class="form-label" for="document">Documento</label>
+							<app-control-message [control]="userForm.get('document')!">
+								<input
+									type="text"
+									class="form-control form-control-sm"
+									id="document"
+									formControlName="document"
+									(keypress)="onlyPressNumbers($event)" />
+							</app-control-message>
+						</div>
+						<div class="col-12 position-relative">
+							<label class="form-label" for="dateBirth">Fecha de nacimiento</label>
+							<app-control-message [control]="userForm.get('dateBirth')!">
+								<!-- <input type="text" class="form-control form-control-sm" id="dateBirth" formControlName="dateBirth" [mask]="'00/00/0000'" /> -->
+								<!-- <input type="hidden" bsDatepicker #datePicker="bsDatepicker" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [maxDate]="dateMax" /> -->
+								<!-- (ngModelChange)="onChangeDateBirth($event)" -->
+								<input
+									type="text"
+									class="form-control form-control-sm"
+									id="dateBirth"
+									formControlName="dateBirth"
+									bsDatepicker
+									#datePicker="bsDatepicker"
+									[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+									[maxDate]="dateMax" />
+							</app-control-message>
+							<!-- <button class="btn-calendar" (click)="datePicker.toggle()" [attr.aria-expanded]="datePicker.isOpen" type="button">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event" viewBox="0 0 16 16">
+									<path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+									<path
+										d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+								</svg>
+							</button> -->
+						</div>
+						<div class="col-12">
+							<label for="photo">Foto</label>
+							<input
+								#imgFile
+								type="file"
+								accept="image/*"
+								class="form-control form-control-sm"
+								id="photo"
+								(change)="onChangeImage($event)"
+								formControlName="photo" />
+							<img class="img-fluid" *ngIf="imagePrev" [src]="imagePrev" alt="preview" />
+						</div>
+						<div class="text-end">
+							<button type="button" *ngIf="isUpdateUser" class="btn button-outline-primary me-2" (click)="cancelUpdateUser()">Cancelar</button>
+							<button type="submit" class="btn button-primary px-4">{{ isUpdateUser ? 'Editar' : 'Crear' }}</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="row py-4">
+			<div class="col-12">
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Foto</th>
+								<th scope="col">Nombres</th>
+								<th scope="col">Correo electrónico</th>
+								<th scope="col">Tipo de documento</th>
+								<th scope="col">Documento</th>
+								<th scope="col">Fecha de nacimiento</th>
+								<th scope="col">Opciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ng-container *ngIf="(users$ | async)?.length; else emptyUsers">
+								<tr *ngFor="let user of users$ | async">
+									<td>
+										<div [style.background-image]="'url(' + user.photo + ')'" class="mx-auto img-user"></div>
+									</td>
+									<td>{{ user.fullname }}</td>
+									<td>{{ user.email }}</td>
+									<td>{{ user.documentType }}</td>
+									<td>{{ user.document }}</td>
+									<td>{{ user.dateBirth | date : 'dd/MM/yyyy' }}</td>
+									<td>
+										<button class="btn btn-sm btn-primary mx-1" (click)="updateUser(user)">Editar</button>
+										<button class="btn btn-sm btn-secondary mx-1" (click)="deleteUser(user.id)">Eliminar</button>
+									</td>
+								</tr>
+							</ng-container>
+							<ng-template #emptyUsers>
+								<tr>
+									<td colspan="7">No hay usuarios</td>
+								</tr>
+							</ng-template>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

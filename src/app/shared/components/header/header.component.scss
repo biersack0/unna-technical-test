@@ -1,0 +1,14 @@
+@import '../../../../assets/scss/variables';
+
+.header-container{
+    &__logo{
+        width: 8rem;
+        /* padding-top: 0.5rem;
+        padding-bottom: 0.5rem; */
+        height: auto;
+    }
+
+    .active{
+        border-bottom: 2px solid $primary;
+    }
+}

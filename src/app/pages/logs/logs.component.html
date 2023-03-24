@@ -1,0 +1,29 @@
+<div class="logs-container">
+	<div class="container">
+		<div class="row d-flex justify-content-center">
+			<div class="col-12">
+				<h4 class="my-3 text-center">Historial de operaciones</h4>
+			</div>
+			<div class="col-md-6">
+				<ng-container *ngIf="(logs$ | async)?.length; else emptyLogs">
+					<ol class="list-group list-group-numbered py-4">
+						<li class="list-group-item d-flex justify-content-between align-items-start" *ngFor="let log of logs$ | async">
+							<div class="ms-2 me-auto">
+								<div class="fw-medium">{{ log.message }}</div>
+							</div>
+							<span class="badge bg-primary rounded-pill">{{ log.timestamp | date : 'h:mm a' : '-0500' }}</span>
+						</li>
+					</ol>
+				</ng-container>
+				<ng-template #emptyLogs>
+					<div class="text-center logs-empty d-flex justify-content-center align-items-center">
+						<div>
+							<img src="assets/img/logs-empty.png" class="img-fluid img-empty" alt="logs-empty" />
+							<p class="py-4 h6 font-weight-light">No se han registrado operaciones todavía.</p>
+						</div>
+					</div>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+</div>

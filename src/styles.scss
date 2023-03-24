@@ -1,0 +1,54 @@
+@import 'assets/scss/variables';
+  
+/* Importing Bootstrap SCSS file. */
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+@import 'ngx-toastr/toastr';
+
+body{
+    font-size: 0.85rem;
+}
+
+.linkedin-logo{
+    max-width: 30px;
+}
+
+.github-logo{
+    max-width: 58px;
+}
+
+.btn{
+    font-size: 0.9rem;
+}
+.button-primary {
+    background-color: #0f4e6f;
+    color: #fff;
+    border: 1px solid #0f4e6f;
+}
+
+.button-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: #0f4e6f;
+    color: #fff;
+}
+
+.button-outline-primary {
+    background-color: #fff;
+    color: #0f4e6f;
+    border: 1px solid #0f4e6f;
+}
+
+.button-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: #0f4e6f;
+    color: #fff;
+}
+
+.pointer{
+    cursor: pointer;
+}
