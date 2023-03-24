@@ -2,26 +2,37 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.0.
 
+Crud users with firebase realtime database and firestorage
+
+## Install packages
+
+Run `yarn install`
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `yarn build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Preview
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.07.27_qhftyx.png)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.08.02_rtva0g.png)
 
-## Running end-to-end tests
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.25.29_ruoofi.png)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.17.24_jks0ku.png)
 
-## Further help
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.21.50_cgu1kt.png)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.19.07_lyw3gr.png)
+
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.23.30_yxti3d.png)
+
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.18.31_bzjbhf.png)
+
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.20.40_ziriex.png)
+
+![Preview](https://res.cloudinary.com/dpzospnqt/image/upload/v1679682649/Github/unna-test/Screenshot_2023-03-24_at_13.21.12_mam43y.png)
