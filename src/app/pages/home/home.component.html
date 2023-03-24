@@ -78,7 +78,9 @@
 								id="photo"
 								(change)="onChangeImage($event)"
 								formControlName="photo" />
-							<img class="img-fluid" *ngIf="imagePrev" [src]="imagePrev" alt="preview" />
+							<div class="text-center py-2">
+								<img class="mx-auto img-user-preview" *ngIf="imagePrev" [src]="imagePrev" alt="preview" />
+							</div>
 						</div>
 						<div class="text-end">
 							<button type="button" *ngIf="isUpdateUser" class="btn button-outline-primary me-2" (click)="cancelUpdateUser()">Cancelar</button>
