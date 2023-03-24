@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Database, DatabaseReference, onValue, push, ref, remove, update } from '@angular/fire/database';
+import { Database, DatabaseReference, onValue, push, ref, remove, set, update } from '@angular/fire/database';
 import { Storage, ref as refStorage, uploadBytes, deleteObject } from '@angular/fire/storage';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { User } from '@core/interfaces/user.interface';
 import { Timestamp } from '@firebase/firestore';
-import { Utils } from '@shared/utils/utils';
 import { LogService } from './log.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,7 +14,7 @@ export class UserService {
 	usersRef: DatabaseReference;
 	private _users = new BehaviorSubject<User[]>([]);
 
-	constructor(private database: Database, private storage: Storage, private logService: LogService) {
+	constructor(private database: Database, private storage: Storage, private logService: LogService, private toastr: ToastrService) {
 		this.usersRef = ref(this.database, 'users');
 	}
 
@@ -34,42 +34,59 @@ export class UserService {
 				users.push(user);
 			}
 
-			console.log(users);
-
 			this._users.next(users);
 		});
 	}
 
 	createUser(user: User) {
-		// const datetime = new Utils().stringToDatetime(user.dateBirth);
-
 		const date = Timestamp.fromDate(user.dateBirth);
 
 		push(this.usersRef, { ...user, dateBirth: date.seconds }).then(async ({ key }) => {
 			if (user.photo) {
-				await this.uploadImage(user.photo, key);
-				await update(ref(this.database, `users/${key}`), {
-					photo: `https://firebasestorage.googleapis.com/v0/b/unna-technical-test.appspot.com/o/${key}?alt=media&token=e745c054-44eb-4dd3-9c2b-1684c128385d`,
-				});
+				const imageKey = await this.uploadImage(user.photo, key);
 
-				this.logService.createLog({
-					message: `Se ha creado el usuario con id: ${key}.`,
+				await update(ref(this.database, `users/${key}`), {
+					photo: `https://firebasestorage.googleapis.com/v0/b/unna-technical-test.appspot.com/o/${imageKey}?alt=media&token=e745c054-44eb-4dd3-9c2b-1684c128385d`,
 				});
 			}
+
+			this.logService.createLog({
+				message: `Se insertó el usuario con id: ${key}.`,
+			});
+
+			this.toastr.success(`Se insertó el usuario ${key}.`, 'Usuario creado!', {
+				closeButton: true,
+				timeOut: 3000,
+			});
+		});
+	}
+
+	async updateUser(id: string, user: User) {
+		const date = Timestamp.fromDate(user.dateBirth);
+		const { photo, ...rest } = user;
+
+		if (photo) {
+			const imageKey = await this.uploadImage(photo, id);
+			await set(ref(this.database, `users/${id}`), {
+				...rest,
+				photo: `https://firebasestorage.googleapis.com/v0/b/unna-technical-test.appspot.com/o/${imageKey}?alt=media&token=e745c054-44eb-4dd3-9c2b-1684c128385d`,
+				dateBirth: date.seconds,
+			});
+		} else {
+			update(ref(this.database, `users/${id}`), {
+				...rest,
+				dateBirth: date.seconds,
+			});
+		}
+
+		this.logService.createLog({
+			message: `Se actualizó el usuario con id: ${id}.`,
 		});
 
-		// console.log(num);
-
-		/* const date = Timestamp.fromDate(user.dateBirth);
-
-		push(this.usersRef, { ...user, dateBirth: date.seconds }).then(async ({ key }) => {
-			if (user.photo) {
-				await this.uploadImage(user.photo, key);
-				await update(ref(this.database, `users/${key}`), {
-					photo: `https://firebasestorage.googleapis.com/v0/b/unna-technical-test.appspot.com/o/${key}?alt=media&token=e745c054-44eb-4dd3-9c2b-1684c128385d`,
-				});
-			}
-		}); */
+		this.toastr.success(`Se actualizó el usuario ${id}.`, 'Usuario actualizado!', {
+			closeButton: true,
+			timeOut: 3000,
+		});
 	}
 
 	deleteUser(id: string) {
@@ -77,12 +94,20 @@ export class UserService {
 		this.deleteImage(id);
 
 		this.logService.createLog({
-			message: `Se ha eliminado el usuario con id: ${id}.`,
+			message: `Se elimino el usuario con id: ${id}.`,
+		});
+
+		this.toastr.error(`Se elimino el usuario ${id}.`, 'Usuario eliminado!', {
+			closeButton: true,
+			timeOut: 3000,
 		});
 	}
 
 	async uploadImage(file: File, idUser: string | null) {
-		await uploadBytes(refStorage(this.storage, `${idUser}`), file);
+		const imageKey = `${idUser}${new Date().getTime()}`;
+
+		await uploadBytes(refStorage(this.storage, `${imageKey}`), file);
+		return imageKey;
 	}
 
 	deleteImage(id: string) {

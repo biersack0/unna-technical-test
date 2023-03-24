@@ -17,11 +17,5 @@ export class SweetAlertService {
 
 	errorAlert(message: string) {
 		this.simpleAlert('error', 'Error', `${message}`);
-		/* Swal.fire({
-			title: 'Error',
-			text: `${message}`,
-			icon: 'error',
-			confirmButtonText: 'Cerrar',
-		}); */
 	}
 }

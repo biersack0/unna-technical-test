@@ -4,7 +4,6 @@ import { User } from '@core/interfaces/user.interface';
 import { UserService } from '@core/services/user.service';
 import { SweetAlertService } from '@shared/services/sweet-alert.service';
 import { ValidationUtils } from '@shared/utils/validation-utils';
-import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
@@ -28,14 +27,11 @@ export class HomeComponent implements OnInit {
 	imageToUpload: File | undefined;
 	imagePrev: any;
 	isUpdateUser = false;
+	idUser: undefined | string;
+
 	@ViewChild('imgFile') imgFile!: ElementRef;
 
-	constructor(
-		private fb: FormBuilder,
-		private userService: UserService,
-		private sweetAlertService: SweetAlertService,
-		private toastr: ToastrService
-	) {
+	constructor(private fb: FormBuilder, private userService: UserService, private sweetAlertService: SweetAlertService) {
 		this.users$ = this.userService.users$;
 	}
 
@@ -55,7 +51,7 @@ export class HomeComponent implements OnInit {
 				let min = 0;
 				documentType === 'ce' ? (min = 12) : (min = 8);
 
-				this.documentControl?.setValidators([Validators.required, Validators.minLength(min)]);
+				this.documentControl?.setValidators([Validators.required, Validators.minLength(min), Validators.maxLength(min)]);
 				this.userForm.updateValueAndValidity();
 
 				this.documentControl?.markAsTouched();
@@ -84,13 +80,7 @@ export class HomeComponent implements OnInit {
 		}
 	}
 
-	createUser() {
-		// this.userForm.get('photo')?.reset();
-
-		/* this.toastr.success('Hello world!', 'Toastr fun!', {
-			closeButton: true,
-			timeOut: 3000,
-		}); */
+	createOrUpdateUser() {
 		this.userForm.markAllAsTouched();
 
 		if (this.userForm.valid) {
@@ -99,20 +89,27 @@ export class HomeComponent implements OnInit {
 				user.photo = this.imageToUpload;
 			}
 
-			this.userService.createUser(user);
+			if (this.isUpdateUser && this.idUser) {
+				this.userService.updateUser(this.idUser, user);
+
+				this.idUser = undefined;
+				this.isUpdateUser = false;
+				this.imageToUpload = undefined;
+			} else {
+				this.userService.createUser(user);
+			}
 
 			// Clear userForm
 			this.imagePrev = undefined;
 			this.resetUserForm();
 		}
-
-		this.resetUserForm();
 	}
 
 	updateUser(user: User) {
 		this.isUpdateUser = true;
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { id, photo, ...rest } = user;
+		this.idUser = id;
 		this.imagePrev = photo;
 
 		this.userForm.reset(rest);

@@ -5,5 +5,5 @@ export interface User {
 	documentType: string;
 	document: number;
 	dateBirth: Date;
-	photo?: File;
+	photo?: any;
 }

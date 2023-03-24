@@ -6,14 +6,15 @@ import player from 'lottie-web/build/player/lottie_light';
 import { ControlMessageComponent } from './components/control-message/control-message.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
+import { NoImagePipe } from './pipes/no-image.pipe';
 
 export function playerFactory() {
 	return player;
 }
 
 @NgModule({
-	declarations: [HeaderComponent, FooterComponent, ControlMessageComponent],
+	declarations: [HeaderComponent, FooterComponent, ControlMessageComponent, NoImagePipe],
 	imports: [CommonModule, RouterModule, LottieModule.forRoot({ player: playerFactory })],
-	exports: [HeaderComponent, FooterComponent, ControlMessageComponent, LottieModule, RouterModule],
+	exports: [HeaderComponent, FooterComponent, ControlMessageComponent, LottieModule, RouterModule, NoImagePipe],
 })
 export class SharedModule {}

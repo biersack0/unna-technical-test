@@ -16,7 +16,7 @@ export class ValidationUtils {
 			case 'minlength':
 				return `Debe tener ${errorValue.requiredLength} caracteres`;
 			case 'maxlength':
-				return `Sólo se permiten ${errorValue.requiredLength} caracteres`;
+				return `Solo se permiten ${errorValue.requiredLength} caracteres`;
 			case 'date':
 				return `Debe ingresar una fecha válida`;
 			default:
@@ -39,6 +39,10 @@ export class ValidationUtils {
 	isValidDate(): ValidatorFn {
 		return (control: AbstractControl): ValidationErrors | null => {
 			const value: string = control.value;
+
+			if (value === null) {
+				return null;
+			}
 
 			if (value.length < 8 && value.length > 1) {
 				return { date: true };

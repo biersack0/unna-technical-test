@@ -2,10 +2,6 @@
 
 .home-container{
     min-height: calc(100vh - 132px);
-    /* background-image: url('../../../assets/img/bg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: right center; */
     background-color: $light;
 
     & .form-group{
@@ -13,9 +9,10 @@
     }
 
     & .img-user{
-        width: 50px;
+        width: auto;
         height: 50px;
-        background-size: cover;
+        background-size: contain;
+        background-position: center;
         background-repeat: no-repeat;
     }
     & th{
@@ -28,12 +25,13 @@
 }
 
 .btn-calendar{
-    right: 6px;
-    top: 50%;
+    right: 1px;
+    top: -30px;
     height: 28px;
     width: 30px;
     position: absolute;
     background: rgb(248, 249, 250);
     box-shadow: none;
     border-color: transparent;
+    z-index: 1000!important;
 }
